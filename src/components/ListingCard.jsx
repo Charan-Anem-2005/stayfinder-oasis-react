@@ -4,43 +4,43 @@ import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin } from 'lucide-react';
 
 const ListingCard = ({ hotel }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
-  const toggleFavorite = (e) => {
+  const handleFavoriteClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
+    setIsFavorited(!isFavorited);
   };
 
   return (
-    <Link to={`/listing/${hotel.id}`} className="group">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-[1.02]">
+    <Link to={`/listing/${hotel.id}`} className="group block">
+      <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
         {/* Image Container */}
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-48 sm:h-56 overflow-hidden">
           <img
             src={hotel.images[0]}
             alt={hotel.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           
           {/* Favorite Button */}
           <button
-            onClick={toggleFavorite}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
+            onClick={handleFavoriteClick}
+            className="absolute top-3 right-3 p-2 rounded-full bg-white bg-opacity-90 hover:bg-opacity-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <Heart
-              className={`h-5 w-5 transition-colors ${
-                isFavorite 
-                  ? 'fill-red-500 text-red-500' 
-                  : 'text-gray-600 hover:text-red-500'
+            <Heart 
+              className={`h-5 w-5 transition-colors duration-200 ${
+                isFavorited 
+                  ? "fill-red-500 text-red-500" 
+                  : "text-gray-600 hover:text-red-500"
               }`}
             />
           </button>
 
           {/* Rating Badge */}
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center space-x-1">
+          <div className="absolute bottom-3 left-3 bg-white bg-opacity-95 rounded-lg px-2 py-1 flex items-center space-x-1 shadow-sm">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-semibold text-gray-900">{hotel.rating}</span>
+            <span className="text-sm font-medium text-gray-900">{hotel.rating}</span>
           </div>
         </div>
 
@@ -53,15 +53,25 @@ const ListingCard = ({ hotel }) => {
           </div>
 
           {/* Hotel Name */}
-          <h3 className="font-semibold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
+          <h3 className="font-semibold text-lg text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
             {hotel.name}
           </h3>
 
+          {/* Description */}
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+            {hotel.description}
+          </p>
+
           {/* Price */}
           <div className="flex items-center justify-between">
-            <div className="flex items-baseline">
+            <div className="flex items-center">
               <span className="text-2xl font-bold text-gray-900">${hotel.price}</span>
-              <span className="text-gray-600 ml-1">/ night</span>
+              <span className="text-gray-600 text-sm ml-1">/ night</span>
+            </div>
+            
+            {/* Reviews count */}
+            <div className="text-sm text-gray-600">
+              {hotel.reviews.length} review{hotel.reviews.length !== 1 ? 's' : ''}
             </div>
           </div>
         </div>
