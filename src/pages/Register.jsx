@@ -20,20 +20,26 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setError('');
-    
+
     if (password !== confirmPassword) {
-      setError('Please make sure your passwords match.');
+      setError('Passwords do not match');
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       await register(username, email, password);
       navigate('/listings');
     } catch (error) {
-      setError('Please try again with different information.');
+      setError('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -52,9 +58,9 @@ const Register = () => {
 
         <Card className="bg-white shadow-xl border-0">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Create your account</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
             <CardDescription className="text-center">
-              Join StayFinder to discover amazing places to stay
+              Enter your details to get started with StayFinder
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -64,7 +70,7 @@ const Register = () => {
                   {error}
                 </div>
               )}
-
+              
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
